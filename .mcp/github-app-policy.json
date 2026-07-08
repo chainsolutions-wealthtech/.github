@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "app_name": "WealthTech MCP Governance App",
+  "target_organization": "chainsolutions-wealthtech",
+  "purpose": "Managed GitHub governance for repositories, branches, pull requests, issues, checks, actions visibility, projects and Codespaces coordination.",
+  "installation_strategy": {
+    "initial_repository_selection": "selected_repositories",
+    "recommended_initial_repository": "chainsolutions-wealthtech/.github",
+    "expand_after_validation": true
+  },
+  "repository_permissions": {
+    "metadata": "read",
+    "contents": "write",
+    "pull_requests": "write",
+    "issues": "write",
+    "actions": "read",
+    "checks": "read",
+    "commit_statuses": "write",
+    "workflows": "write",
+    "codespaces": "write",
+    "codespaces_metadata": "read"
+  },
+  "organization_permissions": {
+    "members": "read",
+    "projects": "write",
+    "webhooks": "write",
+    "organization_codespaces": "read",
+    "organization_codespaces_settings": "read"
+  },
+  "events": [
+    "push",
+    "pull_request",
+    "issues",
+    "repository",
+    "workflow_run",
+    "check_run",
+    "check_suite"
+  ],
+  "guardrails": {
+    "direct_main_writes": false,
+    "branch_prefix": "mcp-",
+    "pull_request_required": true,
+    "human_review_required": true,
+    "public_repository_no_private_inventory": true,
+    "audit_every_action": true,
+    "codespaces_requires_explicit_task": true,
+    "new_repository_creation_requires_template": true
+  },
+  "runtime_tools_to_expose": [
+    "github_status",
+    "github_list_orgs",
+    "github_list_repos",
+    "github_repo_status",
+    "github_create_branch",
+    "github_commit_files_on_branch",
+    "github_open_pr",
+    "github_list_prs",
+    "github_list_actions",
+    "github_audit_permissions",
+    "github_create_repository_from_template",
+    "github_prepare_codespace"
+  ],
+  "status": "policy_proposed"
+}
