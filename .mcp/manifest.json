@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "project": "chainsolutions-wealthtech-organization-profile",
+  "repository": "chainsolutions-wealthtech/.github",
+  "scope": "organization-governance-bootstrap",
+  "visibility": "public",
+  "default_branch": "main",
+  "managed_by": "mcp-governance",
+  "purpose": "Public organization profile and governance entrypoint for ChainSolutions WealthTech.",
+  "rules": {
+    "direct_main_updates": false,
+    "review_required": true,
+    "public_only": true,
+    "private_server_inventory_allowed": false
+  },
+  "status": "bootstrap"
+}
