@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "repository": "chainsolutions-wealthtech/.github",
+  "onboarding_status": "started",
+  "completed_steps": [
+    "organization_profile_detected",
+    "public_repository_access_confirmed",
+    "governance_manifest_prepared",
+    "public_agent_policy_prepared",
+    "public_permission_policy_prepared"
+  ],
+  "remaining_steps": [
+    "open_pull_request_for_review",
+    "confirm_mcp_runtime_visibility",
+    "link_private_inventory_outside_public_repository",
+    "validate_final_governance_rules"
+  ],
+  "blockers": [
+    "MCP runtime visibility must be verified from the deployed MCP service.",
+    "Private operational inventory must remain outside this public repository."
+  ]
+}
