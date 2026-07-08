@@ -36,6 +36,20 @@ Le MCP WealthTech est le superviseur central entre GitHub, les serveurs et les a
 - Les inventaires serveur bruts et les exports sensibles restent prives.
 - Les agents IA ne recoivent pas d'acces SSH libre.
 
+## GitHub App MCP
+
+Une proposition de configuration publique est ouverte dans la PR #2.
+
+Elle ajoute:
+
+- les fichiers publics `.mcp`;
+- la politique de l'application GitHub MCP;
+- un modele de manifeste GitHub App;
+- une procedure d'installation;
+- les outils MCP GitHub attendus.
+
+L'application vise a permettre une gouvernance controlee des repositories, branches, pull requests, issues, workflows, projects et Codespaces, avec revue humaine et audit.
+
 ## Objectif
 
 Faire de GitHub la source versionnee officielle, du serveur la source d'execution reelle, et du MCP le lien de gouvernance entre les deux.
