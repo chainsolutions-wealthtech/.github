@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "repository": "chainsolutions-wealthtech/.github",
+  "mapping_scope": "public-organization-profile-only",
+  "server_mapping_status": "not_publicly_mapped",
+  "public_domains": [],
+  "notes": [
+    "This repository is an organization profile and public governance entrypoint.",
+    "Private server paths, execution hosts and operational inventories are intentionally not recorded here.",
+    "Server mappings must be maintained in protected operational sources and referenced only through public-safe summaries."
+  ]
+}
