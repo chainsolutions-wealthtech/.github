@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "repository": "chainsolutions-wealthtech/.github",
+  "policy": "public-governance-repository",
+  "allowed_actions": [
+    "read_public_profile",
+    "update_public_profile_by_reviewed_branch",
+    "maintain_public_governance_files",
+    "open_pull_request"
+  ],
+  "blocked_actions": [
+    "direct_main_update",
+    "production_deployment",
+    "server_operation",
+    "private_inventory_publication"
+  ],
+  "branch_policy": {
+    "protected_base": "main",
+    "working_branch_prefix": "mcp-",
+    "pull_request_required": true
+  },
+  "review_policy": {
+    "human_review_required": true,
+    "automated_checks_expected": true
+  }
+}

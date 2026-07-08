@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "repository": "chainsolutions-wealthtech/.github",
+  "agents": [
+    {
+      "id": "chatgpt-governance-assistant",
+      "role": "planning-review-coordination",
+      "write_access": "branch_and_pr_only",
+      "production_access": false
+    },
+    {
+      "id": "codex-implementation-agent",
+      "role": "code-implementation-on-dedicated-branch",
+      "write_access": "branch_and_pr_only",
+      "production_access": false
+    },
+    {
+      "id": "audit-agent",
+      "role": "public-governance-audit",
+      "write_access": "none_by_default",
+      "production_access": false
+    }
+  ],
+  "default_rule": "All automated work must stay reviewable through a dedicated branch and pull request."
+}
