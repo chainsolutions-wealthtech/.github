@@ -33,24 +33,38 @@ jobs:
 
       - name: Compile bootstrap scripts
         working-directory: repository-templates/governed-repository-template
-        run: python3 -m py_compile scripts/initialize_governance.py scripts/validate_governance.py
+        run: python3 -m py_compile scripts/initialize_governance.py scripts/auto_bootstrap.py scripts/finalize_bootstrap.py scripts/governance_agent.py scripts/validate_governance.py
 
-      - name: Simulate repository instantiation
+      - name: Simulate automatic repository instantiation
         run: |
           set -euo pipefail
           tmp="$(mktemp -d)"
           cp -a repository-templates/governed-repository-template/. "$tmp/"
           cd "$tmp"
-          python3 scripts/initialize_governance.py \
-            --repository "chainsolutions-wealthtech/template-ci-fixture" \
-            --project-name "Template CI Fixture" \
-            --project-type "test-fixture" \
-            --owner "@chainsolutions-wealthtech"
+          git init -b main
+          git config user.name "Template CI"
+          git config user.email "template-ci@example.invalid"
+          git add -A
+          git commit -m "fixture: template source"
+          export GITHUB_REPOSITORY="chainsolutions-wealthtech/template-ci-fixture"
+          export GITHUB_REF_NAME="main"
+          export GITHUB_SHA="$(git rev-parse HEAD)"
+          export GITHUB_RUN_ID="template-ci"
+          python3 scripts/auto_bootstrap.py
           test ! -e .template-source
           ! grep -R -n -E '\{\{[A-Z0-9_]+\}\}' \
             --include='*.md' --include='*.json' --include='*.yml' --include='*.yaml' --include='*.txt' \
             . --exclude='initialize_governance.py'
           python3 scripts/validate_governance.py
+          git add -A
+          git commit -m "governance: auto-initialize fixture"
+          init_sha="$(git rev-parse HEAD)"
+          python3 scripts/finalize_bootstrap.py --initialization-commit-sha "$init_sha"
+          python3 scripts/validate_governance.py
+          python3 scripts/governance_agent.py observe
+          session_id="$(python3 scripts/governance_agent.py session-start --agent ci --provider github-actions --connection-ref fixture | python3 -c 'import json,sys; print(json.load(sys.stdin)["session"]["session_id"])')"
+          python3 scripts/governance_agent.py dispatch --session-id "$session_id"
+          python3 scripts/governance_agent.py intake --source-type github --source-id fixture --summary "CI fixture information intake"
 
       - name: Check textual integrity
         run: git diff --check
