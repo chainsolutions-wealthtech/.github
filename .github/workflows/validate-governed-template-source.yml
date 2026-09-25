@@ -35,6 +35,25 @@ jobs:
         working-directory: repository-templates/governed-repository-template
         run: python3 -m py_compile scripts/initialize_governance.py scripts/auto_bootstrap.py scripts/finalize_bootstrap.py scripts/governance_agent.py scripts/validate_governance.py
 
+      - name: Validate resilient bootstrap contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('repository-templates/governed-repository-template/.github/workflows/governance-auto-bootstrap.yml').read_text()
+          required = [
+              'push:',
+              'create:',
+              'repository_dispatch:',
+              'schedule:',
+              '*/5 * * * *',
+              'HEAD_MOVED',
+              'BOOTSTRAP_PUSH_FAILED_AFTER_RETRIES',
+              'BOOTSTRAP_REMOTE_ATTESTATION_PASS',
+          ]
+          missing = [item for item in required if item not in text]
+          assert not missing, f'missing bootstrap resilience markers: {missing}'
+          PY
+
       - name: Simulate automatic repository instantiation
         run: |
           set -euo pipefail
@@ -65,6 +84,14 @@ jobs:
           session_id="$(python3 scripts/governance_agent.py session-start --agent ci --provider github-actions --connection-ref fixture | python3 -c 'import json,sys; print(json.load(sys.stdin)["session"]["session_id"])')"
           python3 scripts/governance_agent.py dispatch --session-id "$session_id"
           python3 scripts/governance_agent.py intake --source-type github --source-id fixture --summary "CI fixture information intake"
+          python3 scripts/auto_bootstrap.py | tee /tmp/auto-bootstrap-second-pass.log
+          grep -q "AUTO_BOOTSTRAP_IDEMPOTENT" /tmp/auto-bootstrap-second-pass.log
+          if python3 scripts/governance_agent.py session-start --agent stale --provider github-actions --connection-ref stale --expected-head 0000000000000000000000000000000000000000; then
+            echo "Expected HEAD_MOVED guard to refuse stale session start"
+            exit 1
+          else
+            test "$?" -eq 3
+          fi
 
       - name: Check textual integrity
         run: git diff --check
